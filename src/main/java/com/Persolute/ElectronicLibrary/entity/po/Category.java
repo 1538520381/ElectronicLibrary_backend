@@ -11,29 +11,23 @@ import java.time.LocalDateTime;
 /**
  * @author Persolute
  * @version 1.0
- * @description 书本
+ * @description 类别
  * @email 1538520381@qq.com
- * @date 2025/01/27 11:40
+ * @date 2025/01/27 13:48
  */
-@TableName("Book")
+@TableName("/category")
 @Data
-public class Book implements Serializable {
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 主键
     private Long id;
 
-    // 类别主键
-    private Long categoryId;
-
-    // 书名
+    // 类别
     private String name;
 
-    // 封面路径名
-    private String coverPathName;
-
-    // 原文件路径名
-    private String originalFilePathName;
+    // 顺序
+    private Integer sort;
 
     // 创建时间
     @TableField(fill = FieldFill.INSERT)
