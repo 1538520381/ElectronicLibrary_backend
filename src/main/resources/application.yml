@@ -1,0 +1,13 @@
+server:
+  port: 12000
+
+spring:
+  application:
+    name: ElectronicLibrary
+  profiles:
+    active: dev
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

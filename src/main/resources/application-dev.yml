@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.213.128:3306/ElectronicLibrary?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: Persolute
+    password: mYsQl9572580729
+
+  redis:
+    database: 0
+    host: 192.168.213.128
+    port: 6379
+    timeout: 0
