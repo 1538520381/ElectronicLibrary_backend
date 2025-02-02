@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
  * @email 1538520381@qq.com
  * @date 2025/01/27 11:56
  */
-@TableName("BookPageFile")
+@TableName("BookPageDocument")
 @Data
-public class BookPageFile implements Serializable {
+public class BookPageDocument implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 主键
@@ -29,8 +29,8 @@ public class BookPageFile implements Serializable {
     // 页码
     private Integer page;
 
-    // 页文件路径名
-    private String pageFilePathName;
+    // 页文件主键
+    private String pageDocumentId;
 
     // 创建时间
     @TableField(fill = FieldFill.INSERT)

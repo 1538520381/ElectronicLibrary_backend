@@ -1,6 +1,6 @@
 package com.Persolute.ElectronicLibrary.controller;
 
-import com.Persolute.ElectronicLibrary.service.BookPageFileService;
+import com.Persolute.ElectronicLibrary.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Persolute
  * @version 1.0
- * @description BookPageFile Controller
+ * @description Document Controller
  * @email 1538520381@qq.com
- * @date 2025/01/27 11:56
+ * @date 2025/02/02 20:27
  */
 @RestController
-@RequestMapping("/bookPageFile")
-public class BookPageFileController {
+@RequestMapping("/document")
+public class DocumentController {
     @Autowired
-    private BookPageFileService bookPageFileService;
+    private DocumentService documentService;
 }
