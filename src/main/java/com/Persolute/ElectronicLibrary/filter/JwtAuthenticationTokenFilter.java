@@ -31,9 +31,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
     private static String[] whiteList = {
-            "/admin/register",
-            "/admin/login",
-            "/student/adminLogin",
+            "/**",
     };
 
     @Override

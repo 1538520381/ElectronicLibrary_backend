@@ -1,6 +1,7 @@
 package com.Persolute.ElectronicLibrary.service;
 
 import com.Persolute.ElectronicLibrary.entity.po.Document;
+import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2025/02/02 20:26
  */
 public interface DocumentService extends IService<Document> {
+    R addDocument(Document document);
 }

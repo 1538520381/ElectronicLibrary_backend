@@ -10,3 +10,7 @@ spring:
     host: 192.168.213.128
     port: 6379
     timeout: 0
+
+ElectronicLibrary:
+  document:
+    path: E:\Persolute\code\project\ElectronicLibrary\back_end\ElectronicLibrary\src\main\resources\document\

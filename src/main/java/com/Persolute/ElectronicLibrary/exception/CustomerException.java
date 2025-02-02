@@ -8,6 +8,10 @@ package com.Persolute.ElectronicLibrary.exception;
  * @date 2025/01/15 14:02
  */
 public class CustomerException extends RuntimeException {
+    public CustomerException() {
+        super("服务器异常，请联系管理员");
+    }
+
     public CustomerException(String message) {
         super(message);
     }
