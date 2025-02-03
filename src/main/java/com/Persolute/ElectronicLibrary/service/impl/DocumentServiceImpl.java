@@ -2,7 +2,6 @@ package com.Persolute.ElectronicLibrary.service.impl;
 
 import com.Persolute.ElectronicLibrary.entity.po.Document;
 import com.Persolute.ElectronicLibrary.entity.result.R;
-import com.Persolute.ElectronicLibrary.entity.vo.DocumentUploadVO;
 import com.Persolute.ElectronicLibrary.exception.CustomerException;
 import com.Persolute.ElectronicLibrary.mapper.DocumentMapper;
 import com.Persolute.ElectronicLibrary.service.DocumentService;
@@ -31,13 +30,13 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
             throw new CustomerException();
         }
 
-        DocumentUploadVO documentUploadVO = new DocumentUploadVO();
-        documentUploadVO.setId(document.getId());
-        documentUploadVO.setOriginalDocumentName(document.getOriginalDocumentName());
-        documentUploadVO.setDocumentPathName(document.getDocumentPathName());
-        documentUploadVO.setCreateTime(document.getCreateTime());
-        documentUploadVO.setUpdateTime(document.getUpdateTime());
+        Document addDocumentVO = new Document();
+        addDocumentVO.setId(document.getId());
+        addDocumentVO.setOriginalDocumentName(document.getOriginalDocumentName());
+        addDocumentVO.setDocumentPathName(document.getDocumentPathName());
+        addDocumentVO.setCreateTime(document.getCreateTime());
+        addDocumentVO.setUpdateTime(document.getUpdateTime());
 
-        return R.success().put("documentUploadVO", documentUploadVO);
+        return R.success().put("addDocumentVO", addDocumentVO);
     }
 }

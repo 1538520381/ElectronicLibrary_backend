@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @email 1538520381@qq.com
  * @date 2025/01/27 13:48
  */
-@TableName("/category")
+@TableName("Category")
 @Data
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class Category implements Serializable {
     // 主键
     private Long id;
 
-    // 类别
+    // 名称
     private String name;
 
     // 顺序
