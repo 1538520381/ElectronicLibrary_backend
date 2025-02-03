@@ -60,9 +60,21 @@ public class CategoryController {
      */
     @PutMapping("/updateList")
     public R updateList(@RequestBody CategoryUpdateListDto categoryList) {
-        if (!categoryService.updateBatchById(categoryList.getCategoryList())) {
-            throw new CustomerException();
-        }
+        categoryService.updateBatchById(categoryList.getCategoryList());
+
+        return R.success();
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id删除
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午6:05
+     */
+    @DeleteMapping("/deleteById/{id}")
+    public R deleteById(@PathVariable Long id) {
+        categoryService.removeById(id);
 
         return R.success();
     }
