@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Persolute
  * @version 1.0
@@ -44,5 +46,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
 
         return R.success();
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 列表
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午5:04
+     */
+    @Override
+    public R listUndelete() {
+        LambdaQueryWrapper<Category> lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
+                .eq(Category::getIsDeleted, false);
+        List<Category> categoryList = super.list(lambdaQueryWrapper);
+        return R.success().put("categoryList", categoryList);
     }
 }

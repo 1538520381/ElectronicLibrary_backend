@@ -5,10 +5,7 @@ import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.Persolute.ElectronicLibrary.exception.CustomerException;
 import com.Persolute.ElectronicLibrary.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Persolute
@@ -37,5 +34,17 @@ public class CategoryController {
         }
 
         return categoryService.add(category);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 列表
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午5:05
+     */
+    @GetMapping("/listUndelete")
+    public R listUndelete() {
+        return categoryService.listUndelete();
     }
 }
