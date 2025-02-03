@@ -1,5 +1,6 @@
 package com.Persolute.ElectronicLibrary.controller;
 
+import com.Persolute.ElectronicLibrary.entity.dto.BookQueryPageDto;
 import com.Persolute.ElectronicLibrary.entity.po.Book;
 import com.Persolute.ElectronicLibrary.entity.po.BookPageDocument;
 import com.Persolute.ElectronicLibrary.entity.po.Document;
@@ -12,10 +13,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -99,5 +97,22 @@ public class BookController {
         }).start();
 
         return R.success();
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 列表根据id排序
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午8:38
+     */
+    @GetMapping("/queryPage")
+    public R queryPage(BookQueryPageDto bookQueryPageDto) {
+        if (bookQueryPageDto.getPage() == null) {
+            throw new CustomerException();
+        } else if (bookQueryPageDto.getPageSize() == null) {
+            throw new CustomerException();
+        }
+        return bookService.queryPage(bookQueryPageDto);
     }
 }

@@ -1,6 +1,8 @@
 package com.Persolute.ElectronicLibrary.service;
 
+import com.Persolute.ElectronicLibrary.entity.dto.BookQueryPageDto;
 import com.Persolute.ElectronicLibrary.entity.po.Book;
+import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2025/01/27 11:45
  */
 public interface BookService extends IService<Book> {
+    R queryPage(BookQueryPageDto bookQueryPageDto);
 }

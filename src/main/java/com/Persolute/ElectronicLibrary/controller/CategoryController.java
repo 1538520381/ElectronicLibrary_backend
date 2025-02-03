@@ -8,8 +8,6 @@ import com.Persolute.ElectronicLibrary.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author Persolute
  * @version 1.0
@@ -42,13 +40,13 @@ public class CategoryController {
     /*
      * @author Persolute
      * @version 1.0
-     * @description 列表根据sort排序
+     * @description 获取列表根据sort排序
      * @email 1538520381@qq.com
      * @date 2025/2/3 下午5:05
      */
-    @GetMapping("/listSortBySort")
-    public R listSortBySort() {
-        return categoryService.listSortBySort();
+    @GetMapping("/getListSortBySort")
+    public R getListSortBySort() {
+        return categoryService.getListSortBySort();
     }
 
     /*
