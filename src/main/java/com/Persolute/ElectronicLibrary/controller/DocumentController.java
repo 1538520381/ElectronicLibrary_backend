@@ -69,6 +69,13 @@ public class DocumentController {
         return documentService.addDocument(newDocument);
     }
 
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 上传书本文件
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午6:46
+     */
     @PostMapping("/uploadBook")
     public R uploadBook(@RequestBody MultipartFile document) {
         String originalDocumentName = document.getOriginalFilename();
@@ -116,31 +123,6 @@ public class DocumentController {
         }
 
         return r.put("coverDocument", coverDocument);
-
-//        List<BookPageDocument> pageDocumentList = new ArrayList<>();
-//        try {
-//            PDDocument doc = PDDocument.load(new File(documentPath + documentPathName));
-//            PDFRenderer renderer = new PDFRenderer(doc);
-//            int pageCount = doc.getNumberOfPages();
-//            for (int i = 0; i < pageCount; i++) {
-//                BufferedImage image = renderer.renderImageWithDPI(i, 600);
-//                String pageDocumentPathName = documentPathNameWithoutSuffix + '-' + (i + 1) + ".png";
-//                ImageIO.write(image, "png", new File(documentPath + pageDocumentPathName));
-//
-//                Document pageDocument = new Document();
-//                pageDocument.setOriginalDocumentName(pageDocumentPathName);
-//                pageDocument.setDocumentPathName(pageDocumentPathName);
-//                documentService.addDocument(pageDocument);
-//
-//                BookPageDocument bookPageDocument = new BookPageDocument();
-//                bookPageDocument.setPage(i + 1);
-//                bookPageDocument.setPageDocumentId(pageDocument.getId());
-//                pageDocumentList.add(bookPageDocument);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            throw new CustomerException(e.getMessage());
-//        }
     }
 
     /*

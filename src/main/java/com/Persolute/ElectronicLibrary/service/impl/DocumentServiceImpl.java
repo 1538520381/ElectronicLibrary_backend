@@ -26,9 +26,7 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
      */
     @Override
     public R addDocument(Document document) {
-        if (!super.save(document)) {
-            throw new CustomerException();
-        }
+        super.save(document);
 
         Document addDocumentVO = new Document();
         addDocumentVO.setId(document.getId());

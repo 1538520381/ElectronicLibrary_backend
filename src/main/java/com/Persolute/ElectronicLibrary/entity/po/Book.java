@@ -35,6 +35,9 @@ public class Book implements Serializable {
     // 原文件主键
     private String originalDocumentId;
 
+    // 处理中标识(0：处理成功；1：处理中；2：处理失败)
+    private Integer handlingFlag;
+
     // 创建时间
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

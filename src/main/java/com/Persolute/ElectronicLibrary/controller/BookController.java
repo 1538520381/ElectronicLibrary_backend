@@ -1,9 +1,25 @@
 package com.Persolute.ElectronicLibrary.controller;
 
+import com.Persolute.ElectronicLibrary.entity.po.Book;
+import com.Persolute.ElectronicLibrary.entity.po.BookPageDocument;
+import com.Persolute.ElectronicLibrary.entity.po.Document;
+import com.Persolute.ElectronicLibrary.entity.result.R;
+import com.Persolute.ElectronicLibrary.exception.CustomerException;
+import com.Persolute.ElectronicLibrary.service.BookPageDocumentService;
 import com.Persolute.ElectronicLibrary.service.BookService;
+import com.Persolute.ElectronicLibrary.service.DocumentService;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * @author Persolute
@@ -15,6 +31,73 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/book")
 public class BookController {
+    @Value("${ElectronicLibrary.document.path}")
+    private String documentPath;
+
     @Autowired
     private BookService bookService;
+    @Autowired
+    private DocumentService documentService;
+    @Autowired
+    private BookPageDocumentService bookPageDocumentService;
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 新增书本
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午6:53
+     */
+    @PostMapping("/add")
+    public R add(@RequestBody Book book) {
+        if (book.getCategoryId() == null) {
+            throw new CustomerException();
+        } else if (book.getName() == null) {
+            throw new CustomerException();
+        } else if (book.getCoverDocumentId() == null) {
+            throw new CustomerException();
+        } else if (book.getOriginalDocumentId() == null) {
+            throw new CustomerException();
+        }
+
+        book.setHandlingFlag(1);
+        bookService.save(book);
+
+        new Thread(() -> {
+            try {
+                Document bookDocument = documentService.getById(book.getOriginalDocumentId());
+                String bookDocumentPathName = bookDocument.getDocumentPathName();
+                String bookDocumentPathNameWithoutSuffix = bookDocumentPathName.substring(0, bookDocumentPathName.lastIndexOf("."));
+
+                PDDocument doc = PDDocument.load(new File(documentPath + bookDocument.getDocumentPathName()));
+                PDFRenderer renderer = new PDFRenderer(doc);
+                int pageCount = doc.getNumberOfPages();
+                for (int i = 0; i < pageCount; i++) {
+                    BufferedImage image = renderer.renderImageWithDPI(i, 600);
+                    String pageDocumentPathName = bookDocumentPathNameWithoutSuffix + '-' + (i + 1) + ".png";
+                    ImageIO.write(image, "png", new File(documentPath + pageDocumentPathName));
+
+                    Document pageDocument = new Document();
+                    pageDocument.setOriginalDocumentName(pageDocumentPathName);
+                    pageDocument.setDocumentPathName(pageDocumentPathName);
+                    documentService.addDocument(pageDocument);
+
+                    BookPageDocument bookPageDocument = new BookPageDocument();
+                    bookPageDocument.setBookId(book.getId());
+                    bookPageDocument.setPage(i + 1);
+                    bookPageDocument.setPageDocumentId(pageDocument.getId());
+                    bookPageDocumentService.save(bookPageDocument);
+                }
+                book.setHandlingFlag(0);
+                bookService.updateById(book);
+            } catch (Exception e) {
+                book.setHandlingFlag(2);
+                bookService.updateById(book);
+                e.printStackTrace();
+                throw new CustomerException(e.getMessage());
+            }
+        }).start();
+
+        return R.success();
+    }
 }
