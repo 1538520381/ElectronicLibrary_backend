@@ -51,14 +51,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     /*
      * @author Persolute
      * @version 1.0
-     * @description 列表
+     * @description 列表根据sort排序
      * @email 1538520381@qq.com
      * @date 2025/2/3 下午5:04
      */
     @Override
-    public R listUndelete() {
+    public R listSortBySort() {
         LambdaQueryWrapper<Category> lambdaQueryWrapper = new LambdaQueryWrapper<Category>()
-                .eq(Category::getIsDeleted, false);
+                .eq(Category::getIsDeleted, false)
+                .orderByAsc(Category::getSort);
         List<Category> categoryList = super.list(lambdaQueryWrapper);
         return R.success().put("categoryList", categoryList);
     }
