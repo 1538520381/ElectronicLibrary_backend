@@ -9,6 +9,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -30,6 +33,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/document")
+@Transactional
 public class DocumentController {
     @Value("${ElectronicLibrary.document.path}")
     private String documentPath;
@@ -133,21 +137,23 @@ public class DocumentController {
      * @date 2025/2/3 下午3:04
      */
     @GetMapping("/download/{documentId}")
-    public void download(HttpServletResponse response, @PathVariable String documentId) {
+    public void download(HttpServletResponse response, @PathVariable Long documentId) {
         Document document = documentService.getById(documentId);
 
         try {
             ServletOutputStream outputStream = response.getOutputStream();
 
             if (document == null) {
-                byte[] bytes = JSON.toJSONString(R.error("文件不存在")).getBytes();
+                response.setContentType("text/html;charset=utf-8");
+                byte[] bytes = JSON.toJSONString(R.error("文件不存在")).getBytes(StandardCharsets.UTF_8);
                 outputStream.write(bytes, 0, bytes.length);
                 return;
             }
 
             FileInputStream fileInputStream = new FileInputStream(documentPath + document.getDocumentPathName());
 
-            response.setContentType("image/jpeg");
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(document.getOriginalDocumentName(), "UTF-8") + "\"");
             int len;
             byte[] bytes = new byte[1024];
             while ((len = fileInputStream.read(bytes)) != -1) {

@@ -52,7 +52,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
      * @version 1.0
      * @description 获取列表通过categoryId
      * @email 1538520381@qq.com
-     * @date 2025/2/3 下午9:50
+     * @date 2025/2/3 下午9:55
      */
     @Override
     public List<Book> getListByCategoryId(Long categoryId) {
@@ -60,5 +60,21 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
                 .eq(Book::getIsDeleted, false)
                 .eq(Book::getCategoryId, categoryId);
         return super.list(lambdaQueryWrapper);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id删除
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午10:00
+     */
+    @Override
+    public R deleteById(Long id) {
+        Book book = new Book();
+        book.setId(id);
+        book.setIsDeleted(true);
+        super.updateById(book);
+        return R.success();
     }
 }

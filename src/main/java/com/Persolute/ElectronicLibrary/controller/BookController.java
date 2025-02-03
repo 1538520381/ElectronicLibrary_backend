@@ -13,6 +13,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -28,6 +29,7 @@ import java.io.File;
  */
 @RestController
 @RequestMapping("/book")
+@Transactional
 public class BookController {
     @Value("${ElectronicLibrary.document.path}")
     private String documentPath;
@@ -114,5 +116,18 @@ public class BookController {
             throw new CustomerException();
         }
         return bookService.queryPage(bookQueryPageDto);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id删除
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午10:19
+     */
+    @DeleteMapping("/deleteById/{id}")
+    public R deleteById(@PathVariable Long id) {
+        bookPageDocumentService.deleteByBookId(id);
+        return bookService.deleteById(id);
     }
 }
