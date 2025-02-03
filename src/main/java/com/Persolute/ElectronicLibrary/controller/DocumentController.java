@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.UUID;
 
 /**
@@ -24,7 +27,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/document")
 public class DocumentController {
-    private static final Logger log = LoggerFactory.getLogger(DocumentController.class);
     @Value("${ElectronicLibrary.document.path}")
     private String documentPath;
 
@@ -61,5 +63,39 @@ public class DocumentController {
         }
 
         return documentService.addDocument(newDocument);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 下载文件
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午3:04
+     */
+    @GetMapping("/download/{documentId}")
+    public R download(HttpServletResponse response, @PathVariable String documentId) {
+        Document document = documentService.getById(documentId);
+        if (document == null) {
+            return R.error("文件不存在");
+        }
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(documentPath + document.getDocumentPathName());
+            ServletOutputStream outputStream = response.getOutputStream();
+            response.setContentType("image/jpeg");
+            int len;
+            byte[] bytes = new byte[1024];
+            while ((len = fileInputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, len);
+                outputStream.flush();
+            }
+
+            outputStream.close();
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return R.success();
     }
 }
