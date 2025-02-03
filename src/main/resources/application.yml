@@ -6,6 +6,9 @@ spring:
     name: ElectronicLibrary
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 10GB
 
 mybatis-plus:
   configuration:

@@ -30,7 +30,7 @@ public class BookPageDocument implements Serializable {
     private Integer page;
 
     // 页文件主键
-    private String pageDocumentId;
+    private Long pageDocumentId;
 
     // 创建时间
     @TableField(fill = FieldFill.INSERT)
