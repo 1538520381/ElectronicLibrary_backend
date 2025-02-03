@@ -1,12 +1,16 @@
 package com.Persolute.ElectronicLibrary.controller;
 
 import com.Persolute.ElectronicLibrary.entity.dto.CategoryUpdateListDto;
+import com.Persolute.ElectronicLibrary.entity.po.Book;
 import com.Persolute.ElectronicLibrary.entity.po.Category;
 import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.Persolute.ElectronicLibrary.exception.CustomerException;
+import com.Persolute.ElectronicLibrary.service.BookService;
 import com.Persolute.ElectronicLibrary.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Persolute
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private BookService bookService;
 
     /*
      * @author Persolute
@@ -72,8 +78,12 @@ public class CategoryController {
      */
     @DeleteMapping("/deleteById/{id}")
     public R deleteById(@PathVariable Long id) {
-        categoryService.removeById(id);
+        List<Book> bookList = bookService.getListByCategoryId(id);
 
-        return R.success();
+        if (!bookList.isEmpty()) {
+            return R.error("该类别下已有书本");
+        }
+
+        return categoryService.deleteById(id);
     }
 }

@@ -63,4 +63,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<Category> categoryList = super.list(lambdaQueryWrapper);
         return R.success().put("categoryList", categoryList);
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id删除
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午9:53
+     */
+    @Override
+    public R deleteById(Long id) {
+        Category category = new Category();
+        category.setId(id);
+        category.setIsDeleted(true);
+        super.updateById(category);
+        return R.success();
+    }
 }

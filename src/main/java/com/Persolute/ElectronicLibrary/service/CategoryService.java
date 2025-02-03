@@ -15,4 +15,6 @@ public interface CategoryService extends IService<Category> {
     R add(Category category);
 
     R getListSortBySort();
+
+    R deleteById(Long id);
 }

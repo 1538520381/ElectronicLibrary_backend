@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,5 +45,20 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
 
         super.page(bookPage, lambdaQueryWrapper);
         return R.success().put("bookPage", bookPage);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 获取列表通过categoryId
+     * @email 1538520381@qq.com
+     * @date 2025/2/3 下午9:50
+     */
+    @Override
+    public List<Book> getListByCategoryId(Long categoryId) {
+        LambdaQueryWrapper<Book> lambdaQueryWrapper = new LambdaQueryWrapper<Book>()
+                .eq(Book::getIsDeleted, false)
+                .eq(Book::getCategoryId, categoryId);
+        return super.list(lambdaQueryWrapper);
     }
 }

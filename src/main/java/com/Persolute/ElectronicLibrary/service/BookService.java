@@ -5,6 +5,8 @@ import com.Persolute.ElectronicLibrary.entity.po.Book;
 import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author Persolute
  * @version 1.0
@@ -14,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BookService extends IService<Book> {
     R queryPage(BookQueryPageDto bookQueryPageDto);
+
+    List<Book> getListByCategoryId(Long categoryId);
 }
