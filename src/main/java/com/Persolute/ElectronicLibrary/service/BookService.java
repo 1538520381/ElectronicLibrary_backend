@@ -20,4 +20,6 @@ public interface BookService extends IService<Book> {
     List<Book> getListByCategoryId(Long categoryId);
 
     R deleteById(Long id);
+
+    R queryList(Book bookQueryListDto);
 }

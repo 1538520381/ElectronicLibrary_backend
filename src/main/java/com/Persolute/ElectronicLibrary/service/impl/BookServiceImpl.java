@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,5 +77,29 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
         book.setIsDeleted(true);
         super.updateById(book);
         return R.success();
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 查询分页
+     * @email 1538520381@qq.com
+     * @date 2025/2/4 下午6:42
+     */
+    @Override
+    public R queryList(Book bookQueryListDto) {
+        LambdaQueryWrapper<Book> lambdaQueryWrapper = new LambdaQueryWrapper<Book>()
+                .eq(Book::getIsDeleted, false);
+
+        if (bookQueryListDto.getCategoryId() != null) {
+            lambdaQueryWrapper.eq(Book::getCategoryId, bookQueryListDto.getCategoryId());
+        }
+        if (bookQueryListDto.getName() != null) {
+            lambdaQueryWrapper.like(Book::getName, bookQueryListDto.getName());
+        }
+
+        List<Book> bookList = super.list(lambdaQueryWrapper);
+
+        return R.success().put("bookList", bookList);
     }
 }

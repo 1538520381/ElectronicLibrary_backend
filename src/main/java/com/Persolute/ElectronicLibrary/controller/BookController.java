@@ -130,4 +130,16 @@ public class BookController {
         bookPageDocumentService.deleteByBookId(id);
         return bookService.deleteById(id);
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 查询列表
+     * @email 1538520381@qq.com
+     * @date 2025/2/4 下午6:42
+     */
+    @GetMapping("/queryList")
+    public R queryList(Book bookQueryListDto) {
+        return bookService.queryList(bookQueryListDto);
+    }
 }
