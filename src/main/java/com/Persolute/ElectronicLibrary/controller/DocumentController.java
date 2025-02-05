@@ -168,4 +168,37 @@ public class DocumentController {
             throw new CustomerException(e.getMessage());
         }
     }
+
+    @GetMapping("/previewPdf/{documentId}")
+    public void previewPdf(HttpServletResponse response, @PathVariable Long documentId) {
+        Document document = documentService.getById(documentId);
+
+        try {
+            ServletOutputStream outputStream = response.getOutputStream();
+
+            if (document == null) {
+                response.setContentType("text/html;charset=utf-8");
+                byte[] bytes = JSON.toJSONString(R.error("文件不存在")).getBytes(StandardCharsets.UTF_8);
+                outputStream.write(bytes, 0, bytes.length);
+                return;
+            }
+
+            FileInputStream fileInputStream = new FileInputStream(documentPath + document.getDocumentPathName());
+
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline; filename=\"" + URLEncoder.encode(document.getOriginalDocumentName(), "UTF-8") + "\"");
+            int len;
+            byte[] bytes = new byte[1024];
+            while ((len = fileInputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, len);
+                outputStream.flush();
+            }
+
+            outputStream.close();
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomerException(e.getMessage());
+        }
+    }
 }

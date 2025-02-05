@@ -8,7 +8,8 @@ spring:
     active: dev
   servlet:
     multipart:
-      max-file-size: 10GB
+      max-file-size: 20GB
+      max-request-size: 40GB
 
 mybatis-plus:
   configuration:

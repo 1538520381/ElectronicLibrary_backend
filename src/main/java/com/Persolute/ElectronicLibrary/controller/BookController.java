@@ -60,43 +60,43 @@ public class BookController {
             throw new CustomerException();
         }
 
-        book.setHandlingFlag(1);
+        book.setHandlingFlag(0);
         bookService.save(book);
 
-        new Thread(() -> {
-            try {
-                Document bookDocument = documentService.getById(book.getOriginalDocumentId());
-                String bookDocumentPathName = bookDocument.getDocumentPathName();
-                String bookDocumentPathNameWithoutSuffix = bookDocumentPathName.substring(0, bookDocumentPathName.lastIndexOf("."));
-
-                PDDocument doc = PDDocument.load(new File(documentPath + bookDocument.getDocumentPathName()));
-                PDFRenderer renderer = new PDFRenderer(doc);
-                int pageCount = doc.getNumberOfPages();
-                for (int i = 0; i < pageCount; i++) {
-                    BufferedImage image = renderer.renderImageWithDPI(i, 600);
-                    String pageDocumentPathName = bookDocumentPathNameWithoutSuffix + '-' + (i + 1) + ".png";
-                    ImageIO.write(image, "png", new File(documentPath + pageDocumentPathName));
-
-                    Document pageDocument = new Document();
-                    pageDocument.setOriginalDocumentName(pageDocumentPathName);
-                    pageDocument.setDocumentPathName(pageDocumentPathName);
-                    documentService.addDocument(pageDocument);
-
-                    BookPageDocument bookPageDocument = new BookPageDocument();
-                    bookPageDocument.setBookId(book.getId());
-                    bookPageDocument.setPage(i + 1);
-                    bookPageDocument.setPageDocumentId(pageDocument.getId());
-                    bookPageDocumentService.save(bookPageDocument);
-                }
-                book.setHandlingFlag(0);
-                bookService.updateById(book);
-            } catch (Exception e) {
-                book.setHandlingFlag(2);
-                bookService.updateById(book);
-                e.printStackTrace();
-                throw new CustomerException(e.getMessage());
-            }
-        }).start();
+//        new Thread(() -> {
+//            try {
+//                Document bookDocument = documentService.getById(book.getOriginalDocumentId());
+//                String bookDocumentPathName = bookDocument.getDocumentPathName();
+//                String bookDocumentPathNameWithoutSuffix = bookDocumentPathName.substring(0, bookDocumentPathName.lastIndexOf("."));
+//
+//                PDDocument doc = PDDocument.load(new File(documentPath + bookDocument.getDocumentPathName()));
+//                PDFRenderer renderer = new PDFRenderer(doc);
+//                int pageCount = doc.getNumberOfPages();
+//                for (int i = 0; i < pageCount; i++) {
+//                    BufferedImage image = renderer.renderImageWithDPI(i, 600);
+//                    String pageDocumentPathName = bookDocumentPathNameWithoutSuffix + '-' + (i + 1) + ".png";
+//                    ImageIO.write(image, "png", new File(documentPath + pageDocumentPathName));
+//
+//                    Document pageDocument = new Document();
+//                    pageDocument.setOriginalDocumentName(pageDocumentPathName);
+//                    pageDocument.setDocumentPathName(pageDocumentPathName);
+//                    documentService.addDocument(pageDocument);
+//
+//                    BookPageDocument bookPageDocument = new BookPageDocument();
+//                    bookPageDocument.setBookId(book.getId());
+//                    bookPageDocument.setPage(i + 1);
+//                    bookPageDocument.setPageDocumentId(pageDocument.getId());
+//                    bookPageDocumentService.save(bookPageDocument);
+//                }
+//                book.setHandlingFlag(0);
+//                bookService.updateById(book);
+//            } catch (Exception e) {
+//                book.setHandlingFlag(2);
+//                bookService.updateById(book);
+//                e.printStackTrace();
+//                throw new CustomerException(e.getMessage());
+//            }
+//        }).start();
 
         return R.success();
     }

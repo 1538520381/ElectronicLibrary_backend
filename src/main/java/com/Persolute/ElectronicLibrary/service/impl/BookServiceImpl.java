@@ -84,7 +84,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
      * @version 1.0
      * @description 查询分页
      * @email 1538520381@qq.com
-     * @date 2025/2/4 下午6:42
+     * @date 2025/2/4 下午8:56
      */
     @Override
     public R queryList(Book bookQueryListDto) {
