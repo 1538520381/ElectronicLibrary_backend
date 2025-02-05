@@ -1,6 +1,7 @@
 package com.Persolute.ElectronicLibrary.service;
 
 import com.Persolute.ElectronicLibrary.entity.po.User;
+import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2025/02/05 15:01
  */
 public interface UserService extends IService<User> {
+    R register(User user);
 }
