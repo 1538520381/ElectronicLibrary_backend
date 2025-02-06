@@ -5,9 +5,15 @@ import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.Persolute.ElectronicLibrary.exception.CustomerException;
 import com.Persolute.ElectronicLibrary.mapper.UserMapper;
 import com.Persolute.ElectronicLibrary.service.UserService;
+import com.Persolute.ElectronicLibrary.util.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author Persolute
@@ -18,6 +24,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /*
      * @author Persolute
      * @version 1.0
@@ -37,5 +49,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         super.save(user);
 
         return R.success();
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 登录
+     * @email 1538520381@qq.com
+     * @date 2025/2/5 下午3:17
+     */
+    @Override
+    public R login(User loginUser) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getIsDeleted, false)
+                .eq(User::getAccount, loginUser.getAccount());
+
+        User user = super.getOne(lambdaQueryWrapper);
+        if (user == null) {
+            throw new CustomerException("账号不存在");
+        }
+
+        if (!passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
+            throw new CustomerException("密码错误");
+        }
+
+        redisTemplate.opsForValue().set("login_" + user.getId(), user);
+
+        String token = JWTUtil.createJWT(String.valueOf(user.getId()));
+
+        return R.success("登录成功").put("token", token);
     }
 }

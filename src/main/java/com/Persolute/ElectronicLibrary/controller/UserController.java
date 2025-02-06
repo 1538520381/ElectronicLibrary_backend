@@ -48,4 +48,22 @@ public class UserController {
 
         return userService.register(user);
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 登录
+     * @email 1538520381@qq.com
+     * @date 2025/2/5 下午3:22
+     */
+    @PostMapping("/login")
+    public R login(@RequestBody User user) {
+        if (user.getAccount() == null) {
+            throw new CustomerException("账号不能为空");
+        } else if (user.getPassword() == null) {
+            throw new CustomerException("密码不能为空");
+        }
+
+        return userService.login(user);
+    }
 }
