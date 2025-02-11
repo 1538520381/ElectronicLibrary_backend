@@ -1,5 +1,6 @@
 package com.Persolute.ElectronicLibrary.service.impl;
 
+import com.Persolute.ElectronicLibrary.entity.dto.UserQueryPageDto;
 import com.Persolute.ElectronicLibrary.entity.po.User;
 import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.Persolute.ElectronicLibrary.exception.CustomerException;
@@ -7,6 +8,7 @@ import com.Persolute.ElectronicLibrary.mapper.UserMapper;
 import com.Persolute.ElectronicLibrary.service.UserService;
 import com.Persolute.ElectronicLibrary.util.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -78,5 +80,54 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String token = JWTUtil.createJWT(String.valueOf(user.getId()));
 
         return R.success("登录成功").put("token", token);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 新增用户
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 上午11:53
+     */
+    @Override
+    public R add(User user) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getIsDeleted, false)
+                .eq(User::getAccount, user.getAccount());
+        if (super.getOne(lambdaQueryWrapper) != null) {
+            throw new CustomerException("账号已存在");
+        }
+
+        super.save(user);
+        return R.success();
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 分页查询
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午12:06
+     */
+    @Override
+    public R queryPage(UserQueryPageDto userQueryPageDto) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getIsDeleted, false)
+                .eq(User::getType, 1);
+
+        if (userQueryPageDto.getPhone() != null) {
+            lambdaQueryWrapper.like(User::getPhone, userQueryPageDto.getPhone());
+        }
+        if (userQueryPageDto.getCompany() != null) {
+            lambdaQueryWrapper.like(User::getCompany, userQueryPageDto.getCompany());
+        }
+        if (userQueryPageDto.getStatus() != null) {
+            lambdaQueryWrapper.eq(User::getStatus, userQueryPageDto.getStatus());
+        }
+
+        Page<User> userPage = new Page<>(userQueryPageDto.getPage(), userQueryPageDto.getPageSize());
+        super.page(userPage, lambdaQueryWrapper);
+
+        return R.success().put("userPage", userPage);
     }
 }

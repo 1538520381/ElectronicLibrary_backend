@@ -1,5 +1,6 @@
 package com.Persolute.ElectronicLibrary.controller;
 
+import com.Persolute.ElectronicLibrary.entity.dto.UserQueryPageDto;
 import com.Persolute.ElectronicLibrary.entity.po.User;
 import com.Persolute.ElectronicLibrary.entity.result.R;
 import com.Persolute.ElectronicLibrary.exception.CustomerException;
@@ -104,5 +105,45 @@ public class UserController {
         }
 
         return R.success().put("user", user);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 新增用户
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 上午11:55
+     */
+    @PostMapping("/add")
+    public R add(@RequestBody User user) {
+        if (user.getPhone() == null) {
+            throw new CustomerException("手机号不能为空");
+        } else if (user.getPhone().length() != 11) {
+            throw new CustomerException("手机号格式不对");
+        }
+
+        user.setAccount(user.getPhone());
+        user.setPassword(passwordEncoder.encode(user.getPhone().substring(5)));
+        user.setType(1);
+
+        return userService.add(user);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 分页查询
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午12:05
+     */
+    @GetMapping("/queryPage")
+    public R queryPage(UserQueryPageDto userQueryPageDto) {
+        if (userQueryPageDto.getPage() == null) {
+            throw new CustomerException();
+        } else if (userQueryPageDto.getPageSize() == null) {
+            throw new CustomerException();
+        }
+
+        return userService.queryPage(userQueryPageDto);
     }
 }

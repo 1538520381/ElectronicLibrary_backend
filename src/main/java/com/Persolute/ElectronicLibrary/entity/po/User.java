@@ -32,6 +32,18 @@ public class User implements Serializable {
     // 类型（0：管理员；1：普通用户）
     private Integer type;
 
+    // 电话
+    private String phone;
+
+    // 公司
+    private String company;
+
+    // 状态
+    private Boolean status;
+
+    // 未曾登录标识
+    private Boolean hasNotLoginFlag;
+
     // 创建时间
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
