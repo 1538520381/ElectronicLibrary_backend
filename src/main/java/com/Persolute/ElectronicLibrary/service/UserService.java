@@ -20,4 +20,6 @@ public interface UserService extends IService<User> {
     R add(User user);
 
     R queryPage(UserQueryPageDto userQueryPageDto);
+
+    R deleteById(Long id);
 }

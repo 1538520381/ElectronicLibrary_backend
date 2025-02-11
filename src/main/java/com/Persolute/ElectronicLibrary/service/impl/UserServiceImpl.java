@@ -130,4 +130,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         return R.success().put("userPage", userPage);
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id删除
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午12:41
+     */
+    @Override
+    public R deleteById(Long id) {
+        User user = new User();
+        user.setId(id);
+        user.setIsDeleted(true);
+        super.updateById(user);
+        return R.success();
+    }
 }

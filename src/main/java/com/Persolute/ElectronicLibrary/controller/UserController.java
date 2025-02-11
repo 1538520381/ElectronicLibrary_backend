@@ -146,4 +146,19 @@ public class UserController {
 
         return userService.queryPage(userQueryPageDto);
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id删除
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午12:40
+     */
+    @DeleteMapping("/deleteById/{id}")
+    public R deleteById(@PathVariable Long id) {
+        if (id == null) {
+            throw new CustomerException();
+        }
+        return userService.deleteById(id);
+    }
 }
