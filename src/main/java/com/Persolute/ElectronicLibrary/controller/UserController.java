@@ -178,4 +178,16 @@ public class UserController {
         userService.updateById(user);
         return R.success();
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 初始化密码
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午1:10
+     */
+    @PutMapping("/initializePassword/{id}")
+    public R initializePassword(@PathVariable Long id) {
+        return userService.initializePassword(id);
+    }
 }

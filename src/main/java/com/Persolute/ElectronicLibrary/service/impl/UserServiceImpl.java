@@ -146,4 +146,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         super.updateById(user);
         return R.success();
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 初始化密码
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午1:54
+     */
+    @Override
+    public R initializePassword(Long id) {
+        User user = super.getById(id);
+
+        if (user == null) {
+            throw new CustomerException();
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPhone().substring(5)));
+        super.updateById(user);
+        return R.success();
+    }
 }

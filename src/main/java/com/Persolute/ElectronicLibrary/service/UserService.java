@@ -22,4 +22,6 @@ public interface UserService extends IService<User> {
     R queryPage(UserQueryPageDto userQueryPageDto);
 
     R deleteById(Long id);
+
+    R initializePassword(Long id);
 }
