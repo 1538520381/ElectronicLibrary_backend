@@ -75,11 +75,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomerException("密码错误");
         }
 
+        if (!user.getStatus()) {
+            throw new CustomerException("账号被禁用，请联系管理员");
+        }
+
         redisTemplate.opsForValue().set("login_" + user.getId(), user);
 
         String token = JWTUtil.createJWT(String.valueOf(user.getId()));
 
-        return R.success("登录成功").put("token", token);
+        return R.success("登录成功").put("token", token).put("hasNotLoginFlag", user.getHasNotLoginFlag());
     }
 
     /*
@@ -162,6 +166,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomerException();
         }
 
+        user.setHasNotLoginFlag(true);
         user.setPassword(passwordEncoder.encode(user.getPhone().substring(5)));
         super.updateById(user);
         return R.success();

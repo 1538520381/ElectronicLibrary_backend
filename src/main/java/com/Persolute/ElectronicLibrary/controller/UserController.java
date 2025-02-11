@@ -175,6 +175,11 @@ public class UserController {
         if (user.getId() == null) {
             throw new CustomerException();
         }
+
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setHasNotLoginFlag(false);
+        }
         userService.updateById(user);
         return R.success();
     }
