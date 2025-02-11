@@ -17,6 +17,8 @@ public interface UserService extends IService<User> {
 
     R login(User user);
 
+    R loginAdmin(User user);
+
     R add(User user);
 
     R queryPage(UserQueryPageDto userQueryPageDto);

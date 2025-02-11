@@ -77,6 +77,17 @@ public class UserController {
         return userService.login(user);
     }
 
+    @PostMapping("/loginAdmin")
+    public R loginAdmin(@RequestBody User user) {
+        if (user.getAccount() == null) {
+            throw new CustomerException("账号不能为空");
+        } else if (user.getPassword() == null) {
+            throw new CustomerException("密码不能为空");
+        }
+
+        return userService.loginAdmin(user);
+    }
+
     /*
      * @author Persolute
      * @version 1.0

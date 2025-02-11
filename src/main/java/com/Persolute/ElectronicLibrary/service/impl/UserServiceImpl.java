@@ -86,6 +86,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return R.success("登录成功").put("token", token).put("hasNotLoginFlag", user.getHasNotLoginFlag());
     }
 
+    @Override
+    public R loginAdmin(User loginUser) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getIsDeleted, false)
+                .eq(User::getAccount, loginUser.getAccount())
+                .eq(User::getType, 0);
+
+        User user = super.getOne(lambdaQueryWrapper);
+        if (user == null) {
+            throw new CustomerException("账号不存在");
+        }
+
+        if (!passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
+            throw new CustomerException("密码错误");
+        }
+
+        if (!user.getStatus()) {
+            throw new CustomerException("账号被禁用，请联系管理员");
+        }
+
+        redisTemplate.opsForValue().set("login_" + user.getId(), user);
+
+        String token = JWTUtil.createJWT(String.valueOf(user.getId()));
+
+        return R.success("登录成功").put("token", token).put("hasNotLoginFlag", user.getHasNotLoginFlag());
+    }
+
     /*
      * @author Persolute
      * @version 1.0
