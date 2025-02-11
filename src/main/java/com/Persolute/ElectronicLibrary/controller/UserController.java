@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 /**
  * @author Persolute
@@ -160,5 +161,21 @@ public class UserController {
             throw new CustomerException();
         }
         return userService.deleteById(id);
+    }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id修改
+     * @email 1538520381@qq.com
+     * @date 2025/2/11 下午12:50
+     */
+    @PutMapping("/updateById")
+    public R updateById(User user) {
+        if (user.getId() == null) {
+            throw new CustomerException();
+        }
+        userService.updateById(user);
+        return R.success();
     }
 }
