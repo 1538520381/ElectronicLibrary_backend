@@ -32,6 +32,9 @@ public class User implements Serializable {
     // 类型（0：管理员；1：普通用户）
     private Integer type;
 
+    // 姓名
+    private String name;
+
     // 电话
     private String phone;
 

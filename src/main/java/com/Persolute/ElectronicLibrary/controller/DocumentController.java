@@ -114,7 +114,7 @@ public class DocumentController {
             PDDocument doc = PDDocument.load(new File(documentPath + documentPathName));
             PDFRenderer renderer = new PDFRenderer(doc);
 
-            BufferedImage image = renderer.renderImageWithDPI(0, 600);
+            BufferedImage image = renderer.renderImageWithDPI(0, 18);
             String coverDocumentPathName = documentPathNameWithoutSuffix + '-' + "cover" + ".png";
             ImageIO.write(image, "png", new File(documentPath + coverDocumentPathName));
 
@@ -155,7 +155,7 @@ public class DocumentController {
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(document.getOriginalDocumentName(), "UTF-8") + "\"");
             int len;
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[1024 * 1024 * 3];
             while ((len = fileInputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, len);
                 outputStream.flush();
@@ -188,7 +188,7 @@ public class DocumentController {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "inline; filename=\"" + URLEncoder.encode(document.getOriginalDocumentName(), "UTF-8") + "\"");
             int len;
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[1024 * 1024 * 3];
             while ((len = fileInputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, len);
                 outputStream.flush();

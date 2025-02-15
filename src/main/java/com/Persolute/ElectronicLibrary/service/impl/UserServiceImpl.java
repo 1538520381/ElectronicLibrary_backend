@@ -146,6 +146,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .eq(User::getIsDeleted, false)
                 .eq(User::getType, 1);
 
+        if (userQueryPageDto.getName() != null) {
+            lambdaQueryWrapper.like(User::getName, userQueryPageDto.getName());
+        }
         if (userQueryPageDto.getPhone() != null) {
             lambdaQueryWrapper.like(User::getPhone, userQueryPageDto.getPhone());
         }

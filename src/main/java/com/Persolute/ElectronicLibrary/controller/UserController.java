@@ -128,7 +128,9 @@ public class UserController {
      */
     @PostMapping("/add")
     public R add(@RequestBody User user) {
-        if (user.getPhone() == null) {
+        if (user.getName() == null) {
+            throw new CustomerException("姓名不能为空");
+        } else if (user.getPhone() == null) {
             throw new CustomerException("手机号不能为空");
         } else if (user.getPhone().length() != 11) {
             throw new CustomerException("手机号格式不对");

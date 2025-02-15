@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ElectronicLibrary?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: dr20040804
+
+  redis:
+    database: 0
+    host: localhost
+    port: 6380
+    timeout: 0
+
+ElectronicLibrary:
+  document:
+    path: /mnt/project/electronic_library/file/
