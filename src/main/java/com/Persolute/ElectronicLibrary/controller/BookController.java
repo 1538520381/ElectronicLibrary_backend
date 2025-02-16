@@ -154,4 +154,31 @@ public class BookController {
     public R queryList(Book bookQueryListDto) {
         return bookService.queryList(bookQueryListDto);
     }
+
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据id获取
+     * @email 1538520381@qq.com
+     * @date 2025/2/16 下午9:26
+     */
+    @GetMapping("/getById/{id}")
+    public R getById(@PathVariable Long id) {
+        Book book = bookService.getById(id);
+        if (book.getPage() == -1) {
+            Document bookDocument = documentService.getById(book.getOriginalDocumentId());
+            PDDocument doc = null;
+            try {
+                doc = PDDocument.load(new File(documentPath + bookDocument.getDocumentPathName()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new CustomerException(e.getMessage());
+            }
+            int pageCount = doc.getNumberOfPages();
+            book.setPage(pageCount);
+            bookService.updateById(book);
+        }
+
+        return R.success().put("book", book);
+    }
 }

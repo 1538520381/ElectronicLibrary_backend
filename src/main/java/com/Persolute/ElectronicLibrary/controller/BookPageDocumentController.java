@@ -49,6 +49,13 @@ public class BookPageDocumentController {
     @Autowired
     private BookService bookService;
 
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据书本id和页码下载
+     * @email 1538520381@qq.com
+     * @date 2025/2/16 下午9:24
+     */
     @GetMapping("/downloadByBookIdAndPage/{bookId}/{page}")
     public void downloadByBookIdAndPage(HttpServletResponse response, @PathVariable Long bookId, @PathVariable Integer page) {
         BookPageDocument bookPageDocument = bookPageDocumentService.getByBookIdAndPage(bookId, page);
@@ -61,7 +68,7 @@ public class BookPageDocumentController {
 
                 PDDocument doc = PDDocument.load(new File(documentPath + bookDocument.getDocumentPathName()));
                 PDFRenderer renderer = new PDFRenderer(doc);
-                BufferedImage image = renderer.renderImageWithDPI(page - 1, 600);
+                BufferedImage image = renderer.renderImageWithDPI(page - 1, 150);
                 String pageDocumentPathName = bookDocumentPathNameWithoutSuffix + '-' + page + ".png";
                 ImageIO.write(image, "png", new File(documentPath + pageDocumentPathName));
 

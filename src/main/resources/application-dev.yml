@@ -13,4 +13,4 @@ spring:
 
 ElectronicLibrary:
   document:
-    path: E:\Persolute\code\project\ElectronicLibrary\back_end\ElectronicLibrary\src\main\resources\document\
+    path: E:\Persolute\code\file\ElectronicLibrary\

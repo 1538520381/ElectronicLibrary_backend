@@ -39,6 +39,13 @@ public class BookPageDocumentServiceImpl extends ServiceImpl<BookPageDocumentMap
         return;
     }
 
+    /*
+     * @author Persolute
+     * @version 1.0
+     * @description 根据书本id与页码获取
+     * @email 1538520381@qq.com
+     * @date 2025/2/16 下午9:24
+     */
     @Override
     public BookPageDocument getByBookIdAndPage(Long bookId, Integer page) {
         LambdaQueryWrapper<BookPageDocument> lambdaQueryWrapper = new LambdaQueryWrapper<BookPageDocument>()
