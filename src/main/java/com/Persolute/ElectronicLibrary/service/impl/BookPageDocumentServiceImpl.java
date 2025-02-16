@@ -2,6 +2,7 @@ package com.Persolute.ElectronicLibrary.service.impl;
 
 import com.Persolute.ElectronicLibrary.entity.po.Book;
 import com.Persolute.ElectronicLibrary.entity.po.BookPageDocument;
+import com.Persolute.ElectronicLibrary.entity.po.Document;
 import com.Persolute.ElectronicLibrary.mapper.BookPageDocumentMapper;
 import com.Persolute.ElectronicLibrary.service.BookPageDocumentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -36,5 +37,14 @@ public class BookPageDocumentServiceImpl extends ServiceImpl<BookPageDocumentMap
         super.update(bookPageDocument, lambdaQueryWrapper);
 
         return;
+    }
+
+    @Override
+    public BookPageDocument getByBookIdAndPage(Long bookId, Integer page) {
+        LambdaQueryWrapper<BookPageDocument> lambdaQueryWrapper = new LambdaQueryWrapper<BookPageDocument>()
+                .eq(BookPageDocument::getIsDeleted, false)
+                .eq(BookPageDocument::getBookId, bookId)
+                .eq(BookPageDocument::getPage, page);
+        return super.getOne(lambdaQueryWrapper);
     }
 }

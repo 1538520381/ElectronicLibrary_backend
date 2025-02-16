@@ -29,6 +29,9 @@ public class Book implements Serializable {
     // 书名
     private String name;
 
+    // 页数
+    private Integer page;
+
     // 封面文件主键
     private String coverDocumentId;
 

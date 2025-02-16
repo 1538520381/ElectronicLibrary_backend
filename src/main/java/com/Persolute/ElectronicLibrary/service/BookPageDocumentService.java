@@ -12,4 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BookPageDocumentService extends IService<BookPageDocument> {
     void deleteByBookId(Long bookId);
+
+    BookPageDocument getByBookIdAndPage(Long bookId, Integer page);
 }

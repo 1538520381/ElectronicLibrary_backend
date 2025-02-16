@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Persolute
@@ -59,6 +60,17 @@ public class BookController {
         } else if (book.getOriginalDocumentId() == null) {
             throw new CustomerException();
         }
+
+        Document bookDocument = documentService.getById(book.getOriginalDocumentId());
+        PDDocument doc = null;
+        try {
+            doc = PDDocument.load(new File(documentPath + bookDocument.getDocumentPathName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomerException(e.getMessage());
+        }
+        int pageCount = doc.getNumberOfPages();
+        book.setPage(pageCount);
 
         book.setHandlingFlag(0);
         bookService.save(book);
